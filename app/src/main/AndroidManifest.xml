@@ -11,8 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
-        </activity>
+        <activity android:name=".MainActivity"></activity>
         <activity android:name=".NFC_Activity">
 
             <!-- Handle notes detected from outside our application -->
@@ -50,6 +49,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".FruitActivity"
+            android:theme="@style/FruitActivityTheme.">
+
         </activity>
     </application>
 
