@@ -5,11 +5,20 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import java.io.InputStream;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 public class LoginActivity extends BaseActivity {
 
@@ -26,6 +35,8 @@ public class LoginActivity extends BaseActivity {
     private Button registered;
 
     private CheckBox rememberPass;
+
+    private  String type = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +63,35 @@ public class LoginActivity extends BaseActivity {
             public void onClick(View v) {
                 String account = accountEdit.getText().toString();
                 String password = passwordEdit.getText().toString();
-                //如果账号是2016010599，密码是123456，就认为登录成功
-                if (account.equals("2016010599") && password.equals("123456")){
+                String address = "http://106.15.190.83/server.aspx?" +
+                        "servertype=login" +
+                        "&id=" + account +
+                        "&password=" + password;
+                HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
+                    @Override
+                    public void onFinish(InputStream inputStream) {
+                        try{
+                            DocumentBuilderFactory documentBuilderFactory =  DocumentBuilderFactory.newInstance();
+                            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                            Document document = documentBuilder.parse(inputStream);
+                            //获取根标签
+                            Element element = document.getDocumentElement();
+
+                            type = element.getAttribute("type");
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            Log.d("LoginActivity", "error");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        e.printStackTrace();
+                        Log.d("LoginActivity", "Error");
+                    }
+                });
+
+                if ( type.equals("登录成功") ){
                     editor = preferences.edit();
                     if (rememberPass.isChecked()){
                         //检查复选框是否被选中
@@ -70,7 +108,7 @@ public class LoginActivity extends BaseActivity {
                     startActivity(intent);
                     finish();
                 }
-                else {
+                else if ( type.equals("登录失败") ){
                     Toast.makeText(LoginActivity.this, "account or password is " +
                                     "invalid", Toast.LENGTH_SHORT).show();
                 }
