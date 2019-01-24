@@ -23,6 +23,8 @@ public class LoginActivity extends BaseActivity {
 
     private Button login;
 
+    private Button registered;
+
     private CheckBox rememberPass;
 
     @Override
@@ -33,7 +35,9 @@ public class LoginActivity extends BaseActivity {
         accountEdit = findViewById(R.id.account);
         passwordEdit = findViewById(R.id.password);
         rememberPass = findViewById(R.id.remember_pass);
+        registered = findViewById(R.id.registered);
         login = findViewById(R.id.login);
+
         boolean isRemember = preferences.getBoolean("remember_password", false);
         if (isRemember){
             //  将账号和密码都设置到文本框中
@@ -70,6 +74,14 @@ public class LoginActivity extends BaseActivity {
                     Toast.makeText(LoginActivity.this, "account or password is " +
                                     "invalid", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+        registered.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent RegisteredIntent = new Intent(LoginActivity.this,
+                        Registered.class);
+                startActivity(RegisteredIntent);
             }
         });
     }

@@ -92,14 +92,14 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.nav_quit:
-                        Intent LogInintent = new Intent(MainActivity.this,
+                        Intent LogIntent = new Intent(MainActivity.this,
                                 LoginActivity.class);
-                        startActivity(LogInintent);
+                        startActivity(LogIntent);
                         break;
                     case R.id.nav_NFC:
-                        Intent NFCintent = new Intent(MainActivity.this,
+                        Intent NFCIntent = new Intent(MainActivity.this,
                                 NFC_Activity.class);
-                        startActivity(NFCintent);
+                        startActivity(NFCIntent);
                         break;
                      default:
                          mDrawerLayout.closeDrawers();
@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
-    /*下拉刷新*/
+         /*下拉刷新*/
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {

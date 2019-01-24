@@ -390,6 +390,7 @@ public class NFC_Activity extends AppCompatActivity {
                     Toast.makeText(NFC_Activity.this, "身份证已连接",
                             Toast.LENGTH_SHORT).show();
                     new CommandAsyncTask().execute();
+                    /*上传ex_id*/
 
                 }
                 // nfcbTag.close();
@@ -715,7 +716,7 @@ public class NFC_Activity extends AppCompatActivity {
             StringBuffer sb = new StringBuffer();
             try {
                 byte[] cmd = new byte[] { 0x05, 0x00, 0x00 };
-                ;
+
                 result = nfcbTag.transceive(cmd);
 //                sb.append("寻卡指令:" + ByteArrayToHexString(cmd) + "\n");
 //                sb.append("收:" + ByteArrayToHexString(result) + "\n");
