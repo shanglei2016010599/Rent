@@ -13,8 +13,12 @@ import android.widget.Toast;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -31,9 +35,17 @@ public class Registered extends AppCompatActivity implements View.OnClickListene
 
     private Button back;
 
-    final private String IDcard = "sl";
+    public static String IDcard = "sl";
+
+    public static String account;
+
+    public static String password;
 
     private String type = "";
+
+    public final static String ID_CARD = "id_card";
+
+    public static String idcard = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +57,8 @@ public class Registered extends AppCompatActivity implements View.OnClickListene
         againEdit = findViewById(R.id.again);
         registered = findViewById(R.id.registered);
         back = findViewById(R.id.back);
+        Intent intent = getIntent();
+        idcard = intent.getStringExtra(ID_CARD);
 
         registered.setOnClickListener(this);
         back.setOnClickListener(this);
@@ -69,14 +83,15 @@ public class Registered extends AppCompatActivity implements View.OnClickListene
     }
 
     public void Registered(){
-        String account = accountEdit.getText().toString();
-        String password = passwordEdit.getText().toString();
+        account = accountEdit.getText().toString();
+        password = passwordEdit.getText().toString();
         String again = againEdit.getText().toString();
+
         final String address = "http://106.15.190.83/server.aspx?" +
                 "servertype=register" +
                 "&id=" + account +
                 "&password=" + password +
-                "&idcard=" + IDcard;;
+                "&idcard=" + IDcard;
         if ( password.equals(again) ) {
             HttpUtil.sendHttpRequest(address, new HttpCallbackListener() {
                 @Override
@@ -100,8 +115,8 @@ public class Registered extends AppCompatActivity implements View.OnClickListene
                 }
             });
         } else {
-            Toast.makeText(Registered.this, "Inconsistent password input " +
-                    "twice", Toast.LENGTH_SHORT).show();
+            Toast.makeText(Registered.this, "两次密码不一致"
+                    , Toast.LENGTH_SHORT).show();
         }
     }
 

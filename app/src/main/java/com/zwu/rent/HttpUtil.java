@@ -17,7 +17,7 @@ public class HttpUtil {
                     connection.setRequestMethod("GET");
                     //设置连接超时的时间（优化）
                     connection.setConnectTimeout(5000);
-                    InputStream inputStream=connection.getInputStream();
+                    final InputStream inputStream=connection.getInputStream();
                     if (listener != null){
                         //  回调onFinish()方法
                         listener.onFinish(inputStream);

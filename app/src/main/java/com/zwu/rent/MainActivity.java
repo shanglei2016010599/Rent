@@ -16,22 +16,18 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout mDrawerLayout;
-    /*初始化水果卡片，水果照片+水果名字*/
-    private Fruit[] fruits = {new Fruit("Apple", R.drawable.apple), new Fruit("Banana",
-            R.drawable.banana), new Fruit("Orange", R.drawable.orange),
-            new Fruit("Watermelon", R.drawable.watermelon), new Fruit("Pear", R.drawable.pear),
-            new Fruit("Grape", R.drawable.grape), new Fruit("Pineapple", R.drawable.pineapple),
-            new Fruit("Strawberry", R.drawable.strawberry), new Fruit("Cherry",
-            R.drawable.cherry), new Fruit("Mango", R.drawable.mango)};
 
-    private List<Fruit> fruitList = new ArrayList<>();
+    private List<House> houseList = new ArrayList<>();
 
-    private FruitAdapter adapter;
+    private RecyclerView recyclerView;
+    private GridLayoutManager layoutManager;
+    private HouseAdapter houseAdapter;
+
+
 
     /**
      * This hook is called whenever an item in your options menu is selected.
@@ -73,18 +69,22 @@ public class MainActivity extends AppCompatActivity {
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBar actionBar = getSupportActionBar();
         swipeRefresh = findViewById(R.id.swipe_refresh);
+        swipeRefresh.setColorSchemeResources(R.color.colorPrimary);
 
         if (actionBar != null){
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.ic_menu);
         }
-        /*实现水果卡片展示*/
-        initFruits();
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
+
+        /* 信息初始化 */
+        initHouses(LoginActivity.houses);
+
+        recyclerView = findViewById(R.id.recycler_view);
+        layoutManager = new GridLayoutManager(this, 2);
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new FruitAdapter(fruitList);
-        recyclerView.setAdapter(adapter);
+        houseAdapter = new HouseAdapter(houseList);
+        recyclerView.setAdapter(houseAdapter);
+
         /*左侧菜单栏元件功能控制*/
         navigationView.setCheckedItem(R.id.nav_call);
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
@@ -101,6 +101,10 @@ public class MainActivity extends AppCompatActivity {
                                 NFC_Activity.class);
                         startActivity(NFCIntent);
                         break;
+                    case R.id.nav_task:
+                        Intent intent = new Intent(MainActivity.this,
+                                My_Reservation.class);
+                        startActivity(intent);
                      default:
                          mDrawerLayout.closeDrawers();
                 }
@@ -111,39 +115,43 @@ public class MainActivity extends AppCompatActivity {
         swipeRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                refreshFruits();
+                refreshHouses();
             }
         });
 
     }
-    /*随机生成50张水果卡片*/
-    private void initFruits(){
-        fruitList.clear();
-        for (int i = 0; i < 50; i++){
-            Random random = new Random();
-            int index = random.nextInt(fruits.length);
-            fruitList.add(fruits[index]);
-        }
-    }
+
     /*刷新卡片式布局*/
-    private void refreshFruits(){
+    private void refreshHouses(){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try{
+                    LoginActivity.Init();
                     Thread.sleep(2000);
-                }catch (InterruptedException e){
+                }
+                catch(InterruptedException e){
                     e.printStackTrace();
                 }
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        initFruits();
-                        adapter.notifyDataSetChanged();
+                        initHouses(LoginActivity.houses);
+                        houseAdapter.notifyDataSetChanged();
                         swipeRefresh.setRefreshing(false);
                     }
                 });
             }
         }).start();
     }
+
+    public void initHouses(House[] houses){
+        houseList.clear();
+        for ( int i = 0; i < houses.length; i++ ){
+            if (!(houses[i].getState().equals("0"))){
+                houseList.add(houses[i]);
+            }
+        }
+    }
+
 }

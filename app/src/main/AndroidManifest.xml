@@ -3,7 +3,7 @@
     package="com.zwu.rent">
 
     <uses-permission android:name="android.permission.NFC" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Registered"></activity>
+        <activity android:name=".Rent"></activity>
+        <activity android:name=".My_Rent" />
+        <activity android:name=".My_Reservation" />
+        <activity
+            android:name=".HouseActivity"
+            android:theme="@style/HouseActivityTheme" />
+        <activity android:name=".Registered" />
         <activity android:name=".MainActivity" />
         <activity android:name=".NFC_Activity">
 
@@ -54,7 +60,7 @@
         </activity>
         <activity
             android:name=".FruitActivity"
-            android:theme="@style/FruitActivityTheme."></activity>
+            android:theme="@style/FruitActivityTheme." />
     </application>
 
 </manifest>

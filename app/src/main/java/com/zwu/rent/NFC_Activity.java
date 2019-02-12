@@ -239,7 +239,10 @@ public class NFC_Activity extends AppCompatActivity {
     private void setNoteBody(String body) {
         Editable text = mNoteRead.getText();
         text.clear();
-        text.append("content:"+body+"\n"+"EXTRA_ID:"+ex_id+"\n"+"type："+types);
+        Intent intent = new Intent(NFC_Activity.this, Registered.class);
+        intent.putExtra(Registered.ID_CARD, ex_id);
+        startActivity(intent);
+//        text.append("content:"+body+"\n"+"EXTRA_ID:"+ex_id+"\n"+"type："+types);
     }
 
     private static final BiMap<Byte, String> URI_PREFIX_MAP = ImmutableBiMap
